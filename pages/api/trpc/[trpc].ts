@@ -81,7 +81,7 @@ const appRouter = trpc
   })
   .query("contributors", {
     async resolve() {
-      const data = await prisma.donator.findMany({
+      const contributors = await prisma.donator.findMany({
         where: {
           confirmed_payemnt: true,
         },
@@ -90,7 +90,17 @@ const appRouter = trpc
           donation_amount: true,
         },
       });
-      return { data: data };
+      const total = await prisma.donator.aggregate({
+        _sum: {
+          donation_amount: true,
+        },
+      });
+      return {
+        data: {
+          contributors: contributors,
+          total: total._sum,
+        },
+      };
     },
   });
 

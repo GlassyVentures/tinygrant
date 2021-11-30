@@ -3,7 +3,6 @@ import { trpc } from "../utils/trpc";
 import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import "tailwindcss/tailwind.css";
 import { useRouter } from "next/dist/client/router";
 
 const Home: NextPage = () => {
@@ -13,7 +12,6 @@ const Home: NextPage = () => {
   });
 
   const data = trpc.useQuery(["contributors"]);
-  console.log(data.data?.data);
   const mutation = trpc.useMutation(["checkout"], {
     onSuccess: (data) => {
       location.assign(data.url!);
@@ -34,8 +32,8 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div>
-      <h1>Tiny Grants</h1>
+    <div className="bg-gradient-to-r from-green-400 to-blue-500">
+      <h1 className="text-2xl">Tiny Grants</h1>
       <h2>
         Building a platform to make it insanely easy for kids to fund dope
         projects!
@@ -65,19 +63,23 @@ const Home: NextPage = () => {
         />
         <input type="button" value="Pledge Now" onClick={checkout} />
       </div>
-      <div>
-        <h1>Total Pledged: {}</h1>
+      {data.isLoading ? (
+        <h1>Loading</h1>
+      ) : (
         <div>
-          {data.data?.data.map((item, key) => {
-            return (
-              <div key={key}>
-                <h1>{item.twitter_handle}</h1>
-                <h1>${item.donation_amount}</h1>
-              </div>
-            );
-          })}
+          <h1>Total Pledged: ${data.data?.data.total.donation_amount}</h1>
+          <div>
+            {data.data?.data.contributors.map((item, key) => {
+              return (
+                <div key={key}>
+                  <h1>{item.twitter_handle}</h1>
+                  <h1>${item.donation_amount}</h1>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
