@@ -12,6 +12,8 @@ const Home: NextPage = () => {
     donation_amount: "",
   });
 
+  const data = trpc.useQuery(["contributors"]);
+  console.log(data.data?.data);
   const mutation = trpc.useMutation(["checkout"], {
     onSuccess: (data) => {
       location.assign(data.url!);
@@ -21,6 +23,8 @@ const Home: NextPage = () => {
   const checkout = () => {
     if (Number(cont.donation_amount) < 0 || cont.donation_amount == "") {
       alert("Your donation cannot be less than 0, please try again.");
+    } else if (cont.twitter_handle[0] != "@") {
+      alert("Your twitter handle is invalid, please try again.");
     } else {
       mutation.mutate({
         contribution: Number(cont.donation_amount),
@@ -32,20 +36,12 @@ const Home: NextPage = () => {
   return (
     <div>
       <h1>Tiny Grants</h1>
-      {/* <h1>{url.data?.url}</h1> */}
       <h2>
         Building a platform to make it insanely easy for kids to fund dope
         projects!
       </h2>
       <div>
-        {/* <input type="email" value="Email" /> */}
-        <input
-          type="button"
-          value="Join Daily Newsletter"
-          //   onClick={() => {
-          //     console.log(url.data?.url);
-          //   }}
-        />
+        <input type="button" value="Join Daily Newsletter" />
       </div>
       <div>
         <input
@@ -71,6 +67,16 @@ const Home: NextPage = () => {
       </div>
       <div>
         <h1>Total Pledged: {}</h1>
+        <div>
+          {data.data?.data.map((item, key) => {
+            return (
+              <div key={key}>
+                <h1>{item.twitter_handle}</h1>
+                <h1>${item.donation_amount}</h1>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

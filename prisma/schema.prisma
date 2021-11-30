@@ -2,17 +2,21 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Donator { 
   id Int @id @default(autoincrement())
-  twitter_handle String @db.VarChar(255)
+  twitter_handle String @unique
   donation_amount Int
   confirmed_payemnt Boolean @default(false)
+  session_id String @unique
 }

@@ -2,11 +2,14 @@ import * as trpc from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
 import { z } from "zod";
 import Stripe from "stripe";
-import { url } from "inspector";
+import { PrismaClient } from "@prisma/client";
+import { resolve } from "path/posix";
 
-let stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2020-08-27",
 });
+
+const prisma = new PrismaClient();
 
 const appRouter = trpc
   .router()
@@ -29,8 +32,8 @@ const appRouter = trpc
     }),
     async resolve({ input }) {
       const url = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}/api/trpc`
-        : "http://localhost:3000/api/trpc";
+        ? `https://${process.env.VERCEL_URL}/`
+        : "http://localhost:3000/";
 
       const session = await stripe.checkout.sessions.create({
         line_items: [
@@ -46,10 +49,48 @@ const appRouter = trpc
           },
         ],
         mode: "payment",
-        success_url: `https://${url}/confirm/session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `https://${url}/cancel`,
+        success_url: `${url}/confirm?success=true&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${url}/cancel`,
       });
+
+      await prisma.donator.create({
+        data: {
+          twitter_handle: input.donator,
+          donation_amount: input.contribution,
+          session_id: session.id,
+        },
+      });
+
       return { url: session.url };
+    },
+  })
+  .mutation("confirm", {
+    input: z.object({
+      session_id: z.string(),
+    }),
+    async resolve({ input }) {
+      await prisma.donator.update({
+        where: {
+          session_id: input.session_id,
+        },
+        data: {
+          confirmed_payemnt: true,
+        },
+      });
+    },
+  })
+  .query("contributors", {
+    async resolve() {
+      const data = await prisma.donator.findMany({
+        where: {
+          confirmed_payemnt: true,
+        },
+        select: {
+          twitter_handle: true,
+          donation_amount: true,
+        },
+      });
+      return { data: data };
     },
   });
 

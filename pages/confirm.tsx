@@ -1,6 +1,20 @@
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { useEffect } from "react";
+import { trpc } from "../utils/trpc";
 
 const Confirm = () => {
+  const router = useRouter();
+
+  const cancel = trpc.useMutation(["confirm"]);
+  useEffect(() => {
+    if (router) {
+      const test = router.query.session_id;
+      console.log(test?.toString());
+      cancel.mutate({ session_id: test?.toString()! });
+    }
+  }, [router]);
+
   return (
     <div>
       <h1>Thanks so much!</h1>
