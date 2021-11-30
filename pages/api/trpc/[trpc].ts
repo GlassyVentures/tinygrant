@@ -22,9 +22,10 @@ const appRouter = trpc
       };
     },
   })
-  .query("checkout", {
+  .mutation("checkout", {
     input: z.object({
       contribution: z.number(),
+      donator: z.string(),
     }),
     async resolve({ input }) {
       const url = process.env.VERCEL_URL
@@ -39,14 +40,14 @@ const appRouter = trpc
               product_data: {
                 name: "Donation to Tiny Grant",
               },
-              unit_amount: input.contribution,
+              unit_amount: input.contribution * 100, // Stripe doesn't have decimal points.
             },
             quantity: 1,
           },
         ],
         mode: "payment",
-        success_url: `https://${url}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `https://${url}/?canceled=true`,
+        success_url: `https://${url}/confirm/session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `https://${url}/cancel`,
       });
       return { url: session.url };
     },

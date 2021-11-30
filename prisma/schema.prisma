@@ -12,8 +12,7 @@ datasource db {
 
 model Donator { 
   id Int @id @default(autoincrement())
-  first_name String @db.VarChar(255)
-  last_name String @db.VarChar(255)
   twitter_handle String @db.VarChar(255)
   donation_amount Int
+  confirmed_payemnt Boolean @default(false)
 }
