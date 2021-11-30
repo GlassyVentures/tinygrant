@@ -13,6 +13,11 @@ const Home: NextPage = () => {
     onSuccess: (data) => {
       location.assign(data.url!);
     },
+    onError: () => {
+      alert(
+        "Please double check your username, it may have been used already."
+      );
+    },
   });
 
   const checkout = () => {
