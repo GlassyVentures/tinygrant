@@ -32,46 +32,64 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-400 to-blue-500">
-      <h1 className="text-2xl">Tiny Grants</h1>
-      <h2>
-        Building a platform to make it insanely easy for kids to fund dope
-        projects!
-      </h2>
+    <div className="text-center flex flex-col h-screen justify-evenly">
       <div>
-        <input type="button" value="Join Daily Newsletter" />
+        <h1 className="text-5xl m-5">Tiny Grants</h1>
+        <h2 className="text-lg m-5">
+          Building a platform to make it insanely easy for kids to fund dope
+          projects!
+        </h2>
+        <input
+          type="button"
+          value="Join Daily Newsletter"
+          className="bg-blue-400 w-48 h-10 text-white rounded"
+        />
       </div>
-      <div>
+      <div className="flex flex-row justify-center items-center mx-2">
         <input
           type="Text"
-          placeholder="@_heyglassy"
+          className="bg-gray-300 text-white h-12 p-2 rounded"
+          placeholder="Twitter Handle"
           value={cont.twitter_handle}
           onChange={(e) => setCont({ ...cont, twitter_handle: e.target.value })}
         />
-        $
+        <div className="bg-gray-300 text-white mx-2 rounded pl-2">
+          $
+          <input
+            type="number"
+            className="bg-gray-300 text-white ml-2 h-12 rounded"
+            min="0"
+            value={cont.donation_amount}
+            placeholder="20"
+            onChange={(e) =>
+              setCont({
+                ...cont,
+                donation_amount: e.target.value,
+              })
+            }
+          />
+        </div>
         <input
-          type="number"
-          min="0"
-          value={cont.donation_amount}
-          placeholder="20"
-          onChange={(e) =>
-            setCont({
-              ...cont,
-              donation_amount: e.target.value,
-            })
-          }
+          type="button"
+          value="Pledge Now"
+          onClick={checkout}
+          className="bg-gradient-to-r from-green-400 to-blue-500 w-60 h-12 rounded text-white"
         />
-        <input type="button" value="Pledge Now" onClick={checkout} />
       </div>
       {data.isLoading ? (
         <h1>Loading</h1>
       ) : (
         <div>
-          <h1>Total Pledged: ${data.data?.data.total.donation_amount}</h1>
-          <div>
+          <h1 className="my-8 text-xl">
+            Total Given: ${data.data?.data.total.donation_amount}
+          </h1>
+          <div className="flex justify-center">
             {data.data?.data.contributors.map((item, key) => {
               return (
-                <div key={key}>
+                <div
+                  key={key}
+                  className="bg-gray-300 mx-2 w-48 h-16 flex flex-col justify-center"
+                >
                   <h1>{item.twitter_handle}</h1>
                   <h1>${item.donation_amount}</h1>
                 </div>
