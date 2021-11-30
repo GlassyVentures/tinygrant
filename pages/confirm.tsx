@@ -8,10 +8,9 @@ const Confirm = () => {
 
   const cancel = trpc.useMutation(["confirm"]);
   useEffect(() => {
-    if (router) {
-      const test = router.query.session_id;
-      console.log(test?.toString());
-      cancel.mutate({ session_id: test?.toString()! });
+    if (router.query.success) {
+      const session_id = router.query.session_id;
+      cancel.mutate({ session_id: session_id?.toString()! });
     }
   }, [router]);
 

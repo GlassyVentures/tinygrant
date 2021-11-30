@@ -1,9 +1,6 @@
 import type { NextPage } from "next";
 import { trpc } from "../utils/trpc";
 import { useState } from "react";
-import Head from "next/head";
-import Image from "next/image";
-import { useRouter } from "next/dist/client/router";
 
 const Home: NextPage = () => {
   const [cont, setCont] = useState({
@@ -39,11 +36,12 @@ const Home: NextPage = () => {
           Building a platform to make it insanely easy for kids to fund dope
           projects!
         </h2>
-        <input
+        {/* <input
           type="button"
           value="Join Daily Newsletter"
           className="bg-blue-400 w-48 h-10 text-white rounded"
-        />
+        /> */}{" "}
+        {/* TODO: Add Newsletter */}
       </div>
       <div className="flex flex-row justify-center items-center mx-2">
         <input
