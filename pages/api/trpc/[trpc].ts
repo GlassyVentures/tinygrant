@@ -3,7 +3,6 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import { z } from "zod";
 import Stripe from "stripe";
 import { PrismaClient } from "@prisma/client";
-import { resolve } from "path/posix";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2020-08-27",
