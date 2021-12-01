@@ -49,7 +49,7 @@ const Home: NextPage = () => {
         /> */}{" "}
           {/* TODO: Add Newsletter */}
         </div>
-        <div className="flex flex-row xs:flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
           <input
             type="Text"
             className="bg-white text-black h-12 rounded mt-1 w-48 p-2"
