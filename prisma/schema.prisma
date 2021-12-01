@@ -17,6 +17,6 @@ model Donator {
   id Int @id @default(autoincrement())
   twitter_handle String @unique
   donation_amount Int
-  confirmed_payemnt Boolean @default(false)
+  confirmed_payment Boolean @default(false)
   session_id String @unique
 }
