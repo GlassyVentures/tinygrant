@@ -49,17 +49,17 @@ const Home: NextPage = () => {
         /> */}{" "}
           {/* TODO: Add Newsletter */}
         </div>
-        <div className="flex flex-row xs:flex-col justify-center items-center mx-2">
+        <div className="flex flex-row xs:flex-col justify-center items-center">
           <input
             type="Text"
-            className="bg-white text-black h-12 p-2 rounded mt-1"
+            className="bg-white text-black h-12 rounded mt-1"
             placeholder="Twitter Handle"
             value={cont.twitter_handle}
             onChange={(e) =>
               setCont({ ...cont, twitter_handle: e.target.value })
             }
           />
-          <div className="bg-white text-black mx-2 rounded pl-2 w-48 flex items-center mt-1">
+          <div className="bg-white text-black rounded pl-2 w-48 flex items-center mt-1">
             $
             <input
               type="number"
@@ -94,7 +94,7 @@ const Home: NextPage = () => {
                 return (
                   <div
                     key={key}
-                    className="bg-green-500 text-white mx-2 w-40 h-14 flex flex-col justify-center rounded"
+                    className="bg-green-500 text-white w-40 h-14 flex flex-col justify-center rounded"
                   >
                     <h1>{item.twitter_handle}</h1>
                     <h1>${item.donation_amount}</h1>
