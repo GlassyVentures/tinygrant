@@ -52,7 +52,7 @@ const Home: NextPage = () => {
         <div className="flex flex-row xs:flex-col justify-center items-center">
           <input
             type="Text"
-            className="bg-white text-black h-12 rounded mt-1"
+            className="bg-white text-black h-12 rounded mt-1 w-48 p-2"
             placeholder="Twitter Handle"
             value={cont.twitter_handle}
             onChange={(e) =>
