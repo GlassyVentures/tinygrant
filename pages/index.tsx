@@ -59,22 +59,19 @@ const Home: NextPage = () => {
               setCont({ ...cont, twitter_handle: e.target.value })
             }
           />
-          <div className="bg-white text-black rounded pl-2 w-48 flex items-center mt-1">
-            $
-            <input
-              type="number"
-              className="bg-white text-black h-12 rounded"
-              min="0"
-              value={cont.donation_amount}
-              placeholder="20"
-              onChange={(e) =>
-                setCont({
-                  ...cont,
-                  donation_amount: e.target.value,
-                })
-              }
-            />
-          </div>
+          <input
+            type="number"
+            className="bg-white text-black h-12 rounded mt-1 w-48 p-2"
+            min="0"
+            value={cont.donation_amount}
+            placeholder="$20"
+            onChange={(e) =>
+              setCont({
+                ...cont,
+                donation_amount: e.target.value,
+              })
+            }
+          />
           <input
             type="button"
             value="Pledge Now"
